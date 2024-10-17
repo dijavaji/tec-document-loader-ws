@@ -22,6 +22,7 @@ public class IntentMapper {
 		IntentDto intentDto = new IntentDto();
 		intentDto.setId(savedIntent.getId());
 		intentDto.setName(savedIntent.getName());
+		intentDto.setAssistantId(savedIntent.getAssistantId());
 		intentDto.setDescription(savedIntent.getDescription());
 		intentDto.setCreatedBy(savedIntent.getCreatedBy());
 		return intentDto;
