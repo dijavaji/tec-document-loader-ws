@@ -1,5 +1,6 @@
 package ec.com.technoloqie.document.loader.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -7,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -21,8 +23,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="SCBTPHRASE")
-public class Phrase {
+public class Phrase implements Serializable{
 	
+	private static final long serialVersionUID = -5443070484930045796L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name="PHRASEID",nullable=false, unique=true)
@@ -52,4 +56,10 @@ public class Phrase {
 	
 	@Column(name="STATUS")
 	private Boolean status;
+	
+	@PrePersist 
+	public void prePersist() {
+		createdDate = new Date();
+		status = Boolean.TRUE;
+	}
 }
