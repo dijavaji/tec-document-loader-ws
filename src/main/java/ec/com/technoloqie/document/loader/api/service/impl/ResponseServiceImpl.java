@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderException;
 import ec.com.technoloqie.document.loader.api.dto.ResponseDto;
@@ -22,9 +23,11 @@ public class ResponseServiceImpl implements IResponseService{
 	private IResponseRepository responseRepository;
 
 	@Override
+	@Transactional
 	public ResponseDto createResponse(ResponseDto responseDto) throws DocumentLoaderException {
 		ResponseDto newResponse = null;
 		try {
+			log.info("guarda respuesta {}", responseDto.getPhrase().getId());
 			Response response = ResponseMapper.mapToResponse(responseDto);
 			Response savedResponse = this.responseRepository.save(response);
 			newResponse = ResponseMapper.mapToResponseDto(savedResponse);

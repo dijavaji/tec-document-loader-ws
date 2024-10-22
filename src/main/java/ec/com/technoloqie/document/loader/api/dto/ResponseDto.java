@@ -13,4 +13,5 @@ public class ResponseDto {
 	
 	private String response;
 	private String createdBy;
+	private PhraseDto phrase;
 }

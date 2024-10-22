@@ -12,6 +12,7 @@ public final class ResponseMapper {
 		response.setResponse(responseDto.getResponse());
 		response.setCreatedBy(responseDto.getCreatedBy());
 		response.setCreatedDate(new Date());
+		//response.setPhrase(PhraseMapper.mapToPhrase(responseDto.getPhrase()));
 		return response;
 	}
 
@@ -19,6 +20,7 @@ public final class ResponseMapper {
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.setResponse(savedResponse.getResponse());
 		responseDto.setCreatedBy(savedResponse.getCreatedBy());
+		responseDto.setPhrase(PhraseMapper.mapToPhraseDto(savedResponse.getPhrase()));
 		return responseDto;
 	}
 
