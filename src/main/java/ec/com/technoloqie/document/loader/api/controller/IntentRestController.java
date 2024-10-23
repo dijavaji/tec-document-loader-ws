@@ -25,9 +25,9 @@ import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RestController
-@RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/intent")
+@RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/intents")
 @Slf4j
 public class IntentRestController {
 	
@@ -60,7 +60,7 @@ public class IntentRestController {
 			response.put("message", "Error servicio de guardado de intencion.");
 			response.put("error", e.getMessage() +" : " + e);
 			response.put("success", Boolean.FALSE);
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		 
 	}

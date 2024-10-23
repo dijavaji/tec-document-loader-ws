@@ -50,14 +50,14 @@ public class Phrase implements Serializable{
 	private String createdBy;
 	
 	@Column(name="CREATEDDATE",nullable=false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
 	@Column(name="MODIFIEDBY")
 	private String modifiedBy;
 	
 	@Column(name="MODIFIEDDATE")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedDate;
 	
 	@Column(name="STATUS")
