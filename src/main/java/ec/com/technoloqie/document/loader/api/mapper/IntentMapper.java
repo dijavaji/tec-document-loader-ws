@@ -25,7 +25,7 @@ public class IntentMapper {
 		intentDto.setAssistantId(savedIntent.getAssistantId());
 		intentDto.setDescription(savedIntent.getDescription());
 		intentDto.setCreatedBy(savedIntent.getCreatedBy());
-		//intentDto.setPhrases(PhraseMapper.mapToPhraseDtols(savedIntent.getPhrases()));
+		intentDto.setPhrases(PhraseMapper.mapToPhraseDtols(savedIntent.getPhrases()));
 		return intentDto;
 	}
 

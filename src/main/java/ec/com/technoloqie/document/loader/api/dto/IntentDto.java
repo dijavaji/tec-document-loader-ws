@@ -19,5 +19,6 @@ public class IntentDto {
 	private int assistantId;
 	private Collection <PhraseDto> phrases;
 	private String createdBy;
+	private String modifiedBy;
 	
 }
