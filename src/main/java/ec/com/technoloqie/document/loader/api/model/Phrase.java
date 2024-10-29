@@ -67,7 +67,7 @@ public class Phrase implements Serializable{
     @JoinColumn(name = "INTENTID", nullable = false)
 	private Intent intent;
 	
-	@OneToMany(mappedBy = "phrase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "phrase", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "PHRASEID")
 	private Collection<Response> responses;
 	

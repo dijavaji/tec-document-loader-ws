@@ -1,8 +1,10 @@
 package ec.com.technoloqie.document.loader.api.service.impl;
 
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,12 +68,44 @@ public class IntentServiceImpl implements IIntentService{
 	public IntentDto updateIntent(IntentDto intentdto, int id) throws DocumentLoaderException {
 		Intent existIntent = this.intentRepository.findById(id).orElseThrow(()-> new DocumentLoaderException("Error la intencion no existe")); //tenemos que comprobar si con la identificación dada existe en la db o no
 		existIntent.setName(intentdto.getName());
-		existIntent.setPhrases(PhraseMapper);
+		existIntent.setDescription(intentdto.getDescription());
+		//existIntent.setPhrases(PhraseMapper);
 		existIntent.setModifiedBy(intentdto.getModifiedBy());
 		existIntent.setModifiedDate(new Date());
+		
+		//Predicate predicado = new Predicate<T>() {
+			
+		//};
+		Collection <Phrase> modifiPhrases = intentdto.getPhrases().stream().map(dto -> {
+			Optional<Phrase> updatePhrase = existIntent.getPhrases().stream().filter(phrase -> phrase.getId()==dto.getId()).findFirst();
+			Phrase upPhrase = updatePhrase.get();
+			upPhrase.setPhrase(dto.getPhrase());
+			upPhrase.setModifiedBy(intentdto.getModifiedBy());
+			upPhrase.setModifiedDate(new Date());
+			upPhrase.setResponses(searchUpdateResponses(dto.getResponses(),upPhrase.getResponses(),intentdto.getModifiedBy()));
+			return upPhrase;
+		}).collect(Collectors.toList());
+		
+		existIntent.setPhrases(modifiPhrases);
+		//Optional<Integer> found = list.stream().filter(i -> i >= 1 && i <= 5).findAny();
+		//CollectionUtils.filter(existIntent.getPhrases(), phrase-> phrase.);
+		//existIntent.setCreatedBy(e);
 		//existIntent.setStatus(intentdto.getStatus());
 		this.intentRepository.save(existIntent);
 		return IntentMapper.mapToIntentDto(existIntent);
+	}
+	
+	private Collection <Response> searchUpdateResponses(Collection <ResponseDto> dtoresponses, Collection <Response> responses, String modifiby) {
+		log.info("actualizo respuestas {}", responses.size());
+		 Collection <Response> updateResponses = dtoresponses.stream().map(dto ->{
+			Optional<Response> optResponse = responses.stream().filter(response -> response.getId()==dto.getId()).findFirst();
+			Response updateResponse = optResponse.get();
+			updateResponse.setResponse(dto.getResponse());
+			updateResponse.setModifiedBy(modifiby);
+			updateResponse.setModifiedDate(new Date());
+			return updateResponse;
+		}).collect(Collectors.toList());
+		 return updateResponses;
 	}
 
 	@Override

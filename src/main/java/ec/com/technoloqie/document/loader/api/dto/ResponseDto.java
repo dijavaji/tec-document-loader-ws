@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ResponseDto {
 	
+	private int id;
 	private String response;
 	private String createdBy;
 	private PhraseDto phrase;
