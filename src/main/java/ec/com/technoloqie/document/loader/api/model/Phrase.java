@@ -38,7 +38,7 @@ public class Phrase implements Serializable{
 	@Column(name="PHRASEID",nullable=false, unique=true)
 	private Integer id;
 	
-	@Column(name="PHRASE",nullable=false )
+	@Column(name="PHRASE",nullable=false, columnDefinition = "TEXT")
 	private String phrase;
 	
 	//@Column(name="INTENTID", nullable=false)

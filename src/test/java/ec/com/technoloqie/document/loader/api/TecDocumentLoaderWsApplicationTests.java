@@ -1,12 +1,18 @@
 package ec.com.technoloqie.document.loader.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
+import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +23,9 @@ class TecDocumentLoaderWsApplicationTests {
 	
 	@Autowired
 	private IIntentService intentService;
+	
+	@Autowired
+	private IFileStorageService storageService;
 	
 	@Test
 	void contextLoads() {
@@ -49,4 +58,21 @@ class TecDocumentLoaderWsApplicationTests {
 			Assertions.assertTrue(Boolean.TRUE,"updateIntentTest.");
 		}
 	}
+	
+	@Test
+	void readFileAndSaveCsvTest() {
+		log.info("ingreso updateIntentTest.");
+		try {
+			//File file = new File("src/test/resources/input.txt");
+			//FileInputStream input = new FileInputStream(file);
+			//MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+			MultipartFile multipartFile = new MockMultipartFile("questionData.csv", new FileInputStream(new File("/home/diego/Downloads/questionData.csv")));
+			
+			this.storageService.save(multipartFile);
+		}catch(Exception e) {
+			log.error("Error readFileAndSaveCsvTest. {}",e );
+			Assertions.assertTrue(Boolean.TRUE,"readFileAndSaveCsvTest.");
+		}
+	}
+	
 }
