@@ -14,4 +14,5 @@ public interface IIntentService {
 	//AccountDto findOneByAccNumber(Integer code);
 	IntentDto getIntentById(Integer code) throws DocumentLoaderException;
 	
+	IntentDto createIntentKnowledge(IntentDto intent) throws DocumentLoaderException;
 }

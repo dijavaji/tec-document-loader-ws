@@ -1,12 +1,17 @@
 package ec.com.technoloqie.document.loader.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="SCBTINTENT")
-public class Intent {
+public class Intent implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -64,19 +69,15 @@ public class Intent {
 	@ManyToOne
 	@JoinColumn(name="CUSTOMERID",nullable=false)
 	private Customer customer;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ACCOUNTID")
-	private Collection<AccountTransaction> accTranCol;
-	
-	public Account() {
-		this.accTranCol = new ArrayList<>();
-	}*/
+	*/
+	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "ACCOUNTID")
+	private Set<Phrase> phrases;
 	
     @PrePersist 
 	public void prePersist() {
-		createdDate = new Date();
-		status = Boolean.TRUE;
+		setCreatedDate(new Date());
+		setStatus(Boolean.TRUE);
 	}
 
 	private static final long serialVersionUID = -979071489122757786L;

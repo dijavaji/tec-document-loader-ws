@@ -11,13 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class IntentDto {
+public class PhraseDto {
 	
-	private Integer id;
-	private String name;
-	private String description;
-	private int assistantId;
-	private Collection <PhraseDto> phrases;
+	private int id;
+	private String phrase;
 	private String createdBy;
-	
+	private Collection <ResponseDto> responses;
 }

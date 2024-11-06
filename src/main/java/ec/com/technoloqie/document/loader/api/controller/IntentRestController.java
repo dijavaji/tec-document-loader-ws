@@ -49,8 +49,8 @@ public class IntentRestController {
 		}
 		
 		try {
-			IntentDto intent = this.intentService.createIntent(intentDto);
-			response.put("message", "Archivo subido correcto");
+			IntentDto intent = this.intentService.createIntentKnowledge(intentDto);
+			response.put("message", "Intencion guardada correctamente");
 			response.put("data", intent);
 			response.put("success", Boolean.TRUE);
 			
@@ -58,7 +58,7 @@ public class IntentRestController {
 		}catch(Exception e) {
 			log.error("Error servicio de guardado de intencion.",e );
 			response.put("message", "Error servicio de guardado de intencion.");
-			response.put("error", e.getMessage() +" : " + e.getStackTrace());
+			response.put("error", e.getMessage() +" : " + e);
 			response.put("success", Boolean.FALSE);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.EXPECTATION_FAILED);
 		}
