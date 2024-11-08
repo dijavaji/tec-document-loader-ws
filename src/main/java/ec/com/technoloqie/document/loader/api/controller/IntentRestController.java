@@ -25,9 +25,9 @@ import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RestController
-@RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/intent")
+@RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/intents")
 @Slf4j
 public class IntentRestController {
 	
@@ -54,21 +54,33 @@ public class IntentRestController {
 			response.put("data", intent);
 			response.put("success", Boolean.TRUE);
 			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
 		}catch(Exception e) {
 			log.error("Error servicio de guardado de intencion.",e );
 			response.put("message", "Error servicio de guardado de intencion.");
 			response.put("error", e.getMessage() +" : " + e);
 			response.put("success", Boolean.FALSE);
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		 
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getIntentById(@PathVariable Integer id) {
-		IntentDto intentDto = this.intentService.getIntentById(id);
-		return ResponseEntity.ok(intentDto); 
+		Map<String, Object> response = new HashMap<>();
+		try {
+			IntentDto intentDto = this.intentService.getIntentById(id);
+			response.put("message", "Consulta intencion correctamente");
+			response.put("data", intentDto);
+			response.put("success", Boolean.TRUE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}catch(Exception e) {
+			log.error("Error consulta de intencion.",e );
+			response.put("message", "Error consulta de intencion.");
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping
