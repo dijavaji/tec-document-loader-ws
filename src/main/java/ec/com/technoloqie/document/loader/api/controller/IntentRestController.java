@@ -91,8 +91,21 @@ public class IntentRestController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteIntent(@Valid @PathVariable Integer id) {
-		this.intentService.deleteIntent(id);
-		return ResponseEntity.ok("Intencion eliminada correctamente"); 
+		Map<String, Object> response = new HashMap<>();
+		log.info("elimino intencion.{}", id);
+		try {
+			this.intentService.deleteIntent(id);
+			response.put("message", "Intencion eliminada correctamente");
+			response.put("data", id);
+			response.put("success", Boolean.TRUE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}catch(Exception e) {
+			log.error("Error borrado de intencion.",e );
+			response.put("message", "Error borrado de intencion.");
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	

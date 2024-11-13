@@ -1,5 +1,6 @@
 package ec.com.technoloqie.document.loader.api.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,7 @@ public class ResponseServiceImpl implements IResponseService{
 	}
 
 	@Override
+	@Transactional
 	public ResponseDto updateResponse(ResponseDto responsedto, int id) throws DocumentLoaderException {
 		Response existResponse = this.responseRepository.findById(id).orElseThrow(()-> new DocumentLoaderException("Error la pregunta no existe")); //tenemos que comprobar si con la identificación dada existe en la db o no
 		//existAccount.setBalance(intentdto.getBalance());
@@ -50,21 +52,30 @@ public class ResponseServiceImpl implements IResponseService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteResponse(Integer code) throws DocumentLoaderException {
 		getResponseById(code);
 		this.responseRepository.deleteById(code);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ResponseDto> getListResponse() throws DocumentLoaderException {
 		List <Response> responses = this.responseRepository.findAll();
 		return responses.stream().map((phrase)-> ResponseMapper.mapToResponseDto(phrase)).collect(Collectors.toList());
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseDto getResponseById(Integer code) throws DocumentLoaderException {
 		Response response = this.responseRepository.findById(code).orElseThrow(()-> new DocumentLoaderException("Error la respuesta no existe"));
 		return ResponseMapper.mapToResponseDto(response);
+	}
+
+	@Override
+	@Transactional
+	public void deleteResponseByList(Collection<Response> responses) throws DocumentLoaderException {
+		this.responseRepository.deleteAll(responses);
 	}
 
 }

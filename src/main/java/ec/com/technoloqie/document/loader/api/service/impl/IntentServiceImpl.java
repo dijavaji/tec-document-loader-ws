@@ -1,5 +1,7 @@
 package ec.com.technoloqie.document.loader.api.service.impl;
 
+
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +23,9 @@ import ec.com.technoloqie.document.loader.api.model.Response;
 import ec.com.technoloqie.document.loader.api.repository.IIntentRepository;
 import ec.com.technoloqie.document.loader.api.repository.IPhraseRepository;
 import ec.com.technoloqie.document.loader.api.repository.IResponseRepository;
+import ec.com.technoloqie.document.loader.api.repository.dao.IIntentDao;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
+import ec.com.technoloqie.document.loader.api.service.IPhraseService;
 import ec.com.technoloqie.document.loader.api.service.IResponseService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +36,11 @@ public class IntentServiceImpl implements IIntentService{
 	@Autowired
 	private IIntentRepository intentRepository;
 	@Autowired
+	private IIntentDao intentDao;
+	@Autowired
 	private IPhraseRepository phraseRepository;
+	@Autowired
+	private IPhraseService phraseService;
 	@Autowired
 	private IResponseService responseService;
 	@Autowired
@@ -56,19 +64,38 @@ public class IntentServiceImpl implements IIntentService{
 	@Override
 	@Transactional
 	public IntentDto updateIntent(IntentDto intentdto, int id) throws DocumentLoaderException {
-		Intent existAccount = this.intentRepository.findById(id).orElseThrow(()-> new DocumentLoaderException("Error la cuenta no existe")); //tenemos que comprobar si con la identificación dada existe en la db o no
-		//existAccount.setBalance(intentdto.getBalance());
-		//existAccount.setModifiedBy(intentdto.getModifiedBy());
-		//existAccount.setModifiedDate(LocalDate.now());
-		//existAccount.setStatus(intentdto.getStatus());
-		this.intentRepository.save(existAccount);
-		return IntentMapper.mapToIntentDto(existAccount);
+		Intent existIntent = this.intentRepository.findById(id).orElseThrow(()-> new DocumentLoaderException("Error la intencion no existe")); //tenemos que comprobar si con la identificación dada existe en la db o no
+		existIntent.setName(intentdto.getName());
+		existIntent.setPhrases(PhraseMapper);
+		existIntent.setModifiedBy(intentdto.getModifiedBy());
+		existIntent.setModifiedDate(new Date());
+		//existIntent.setStatus(intentdto.getStatus());
+		this.intentRepository.save(existIntent);
+		return IntentMapper.mapToIntentDto(existIntent);
 	}
 
 	@Override
+	@Transactional
 	public void deleteIntent(Integer code) throws DocumentLoaderException {
-		getIntentById(code);
-		this.intentRepository.deleteById(code);
+		try {
+			Intent searchIntent = this.intentRepository.findById(code).orElseThrow(()-> new DocumentLoaderException("Error la intencion no existe"));
+			//Intent searchIntent = intentDao.getIntentById(code);	
+			/*Collection<Phrase> deletePhrases = searchIntent.getPhrases();
+			log.info("borro respuestas {}", deletePhrases.size());
+			deletePhrases.stream().map(phrase -> {
+				log.info("borrando {}",phrase.getId(), phrase.getResponses());
+				this.responseService.deleteResponseByList(phrase.getResponses());
+				return phrase;
+			}).collect(Collectors.toList());
+			
+			log.info("borro preguntas {}", deletePhrases.size());
+			this.phraseService.deletePhraseByList(deletePhrases);
+			*/
+			this.intentRepository.delete(searchIntent);
+		}catch(Exception e) {
+			log.error("Error al momento de eliminar intencion",e);
+			throw new DocumentLoaderException("Error al momento de eliminar intencion",e);
+		}
 	}
 
 	@Override
@@ -81,7 +108,8 @@ public class IntentServiceImpl implements IIntentService{
 	@Override
 	@Transactional(readOnly = true)
 	public IntentDto getIntentById(Integer code) throws DocumentLoaderException {
-		Intent intent = this.intentRepository.findById(code).orElseThrow(()-> new DocumentLoaderException("Error la cuenta no existe"));
+		Intent intent = this.intentRepository.findById(code).orElseThrow(()-> new DocumentLoaderException("Error la intencion no existe"));
+		//Intent intent = this.intentDao.getIntentById(code);
 		return IntentMapper.mapToIntentDto(intent);
 	}
 

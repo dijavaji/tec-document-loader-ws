@@ -1,8 +1,8 @@
 package ec.com.technoloqie.document.loader.api.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -70,9 +70,9 @@ public class Intent implements Serializable{
 	@JoinColumn(name="CUSTOMERID",nullable=false)
 	private Customer customer;
 	*/
-	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//@JoinColumn(name = "ACCOUNTID")
-	private Set<Phrase> phrases;
+	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	//@JoinColumn(name = "INTENTID")
+	private Collection<Phrase> phrases;
 	
     @PrePersist 
 	public void prePersist() {
