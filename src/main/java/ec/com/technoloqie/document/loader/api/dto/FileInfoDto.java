@@ -9,10 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ResponseDto {
-	
-	private int id;
-	private String response;
-	private String createdBy;
-	private PhraseDto phrase;
+public class FileInfoDto {
+
+	private String name;
+	private String url;
+
 }

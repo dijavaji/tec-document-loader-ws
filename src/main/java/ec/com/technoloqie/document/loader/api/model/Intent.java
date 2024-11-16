@@ -70,7 +70,7 @@ public class Intent implements Serializable{
 	@JoinColumn(name="CUSTOMERID",nullable=false)
 	private Customer customer;
 	*/
-	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "INTENTID")
 	private Collection<Phrase> phrases;
 	

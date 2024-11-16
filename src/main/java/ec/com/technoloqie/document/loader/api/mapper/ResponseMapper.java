@@ -22,6 +22,7 @@ public final class ResponseMapper {
 
 	public static ResponseDto mapToResponseDto(Response savedResponse) {
 		ResponseDto responseDto = new ResponseDto();
+		responseDto.setId(savedResponse.getId());
 		responseDto.setResponse(savedResponse.getResponse());
 		responseDto.setCreatedBy(savedResponse.getCreatedBy());
 		//responseDto.setPhrase(PhraseMapper.mapToPhraseDto(savedResponse.getPhrase()));
