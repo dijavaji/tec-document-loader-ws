@@ -32,7 +32,7 @@ public class Response {
 	@Column(name="RESPONSEID",nullable=false, unique=true)
 	private Integer id;
 	
-	@Column(name="RESPONSE")
+	@Column(name="RESPONSE",nullable=false , columnDefinition = "TEXT")
 	private String response;
 	
 	//@Column(name="PHRASEID", nullable=false)

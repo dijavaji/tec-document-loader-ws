@@ -183,8 +183,8 @@ public class IntentServiceImpl implements IIntentService{
 			newIntentDto = IntentMapper.mapToIntentDto(savedIntent);
 			newIntentDto.setPhrases(phrases);
 		}catch(Exception e) {
-			log.error("Error al momento de guardar intencion",e);
-			throw new DocumentLoaderException("Error al momento de guardar intencion",e);
+			log.error("Error al momento de guardar intenciones",e);
+			throw new DocumentLoaderException("Error al momento de guardar intenciones",e);
 		}
 		return newIntentDto;
 	}
