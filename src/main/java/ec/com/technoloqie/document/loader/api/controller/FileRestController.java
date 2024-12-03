@@ -1,14 +1,12 @@
 package ec.com.technoloqie.document.loader.api.controller;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,12 +49,32 @@ public class FileRestController {
 			
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		} catch (Exception e) {
-			log.error("Error al momento de subir archivo.");
+			log.error("Error al momento de subir archivo.", e);
 			response.put("message", "Error al momento de subir archivo.");
 			response.put("error", "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage());
 			response.put("success", Boolean.FALSE);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	@PostMapping("/uploads")
+    public ResponseEntity<?> uploadFile(@RequestParam("files") Collection <MultipartFile> files) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+            Collection <String> filePaths = storageService.storeFiles(files);
+            response.put("message", "Archivos guardados en: " );
+			response.put("data", filePaths);
+			response.put("success", Boolean.TRUE);
+			
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+        } catch (Exception e) {
+        	log.error("Error al momento de subir archivos. {}",e);
+			response.put("message", "Error al momento de subir archivos.");
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+    }
 
 }
