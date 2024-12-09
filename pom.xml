@@ -74,6 +74,11 @@
     		<artifactId>spring-ai-pdf-document-reader</artifactId>
 		</dependency>
 		
+		<!--dependency>
+    		<groupId>org.springframework.ai</groupId>
+    		<artifactId>spring-ai-ollama</artifactId>
+		</dependency-->
+		
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -87,7 +92,24 @@
 		    <artifactId>commons-collections4</artifactId>
 		    <version>4.5.0-M1</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-spring-boot-starter</artifactId>
+			<version>0.35.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>dev.langchain4j</groupId>
+		    <artifactId>langchain4j-ollama</artifactId>
+		    <version>0.35.0</version>
+		</dependency>
+		
+		<dependency>
+            	<groupId>dev.langchain4j</groupId>
+            	<artifactId>langchain4j-core</artifactId>
+            	<version>0.35.0</version>
+        	</dependency>
 
 	</dependencies>
 	<dependencyManagement>

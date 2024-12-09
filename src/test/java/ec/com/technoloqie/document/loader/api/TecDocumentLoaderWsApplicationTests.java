@@ -2,6 +2,8 @@ package ec.com.technoloqie.document.loader.api;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -96,6 +98,31 @@ class TecDocumentLoaderWsApplicationTests {
 		}catch(Exception e) {
 			log.error("Error getDocsFromPdfTest. {}",e );
 			Assertions.assertTrue(Boolean.TRUE,"getDocsFromPdfTest.");
+		}
+	}
+	
+	@Test
+	void readFilesAndSaveMultipartTest() {
+		log.info("ingreso readFilesAndSaveMultipartTest.");
+		long time = System.currentTimeMillis();
+		try {
+			//File file = new File("src/test/resources/input.txt");
+			//FileInputStream input = new FileInputStream(file);
+			//MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+			MultipartFile multipartFile1 = new MockMultipartFile("codigo_civil_colombia.pdf", "/home/codigo_civil_colombia.pdf","application/pdf",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/codigo_civil_colombia.pdf")));
+			MultipartFile multipartFile2 = new MockMultipartFile("ley-minera.pdf","/home/ley-minera.pdf" ,"application/pdf",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/ley-minera.pdf")));
+			Collection <MultipartFile> docs= new ArrayList<>();
+			
+			//MultipartFile multipartFile3 = new MockMultipartFile("ley-minera.txt","/home/ley-minera.txt" ,"text/plain",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/ley-minera.txt")));
+			
+			docs.add(multipartFile1);
+			docs.add(multipartFile2);
+			//docs.add(multipartFile3);
+			this.storageService.storeDocuments(docs);
+			log.info("fin readFilesAndSaveMultipartTest. tiempo: {}", System.currentTimeMillis() - time);
+		}catch(Exception e) {
+			log.error("Error readFilesAndSaveMultipartTest. {}",e );
+			Assertions.assertTrue(Boolean.TRUE,"readFilesAndSaveMultipartTest.");
 		}
 	}
 	
