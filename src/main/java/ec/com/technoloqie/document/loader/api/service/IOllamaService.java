@@ -6,5 +6,5 @@ import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderEx
 
 public interface IOllamaService {
 
-	List<Float> createEmbedding(String text)throws DocumentLoaderException;
+	List<Double> createEmbedding(String text)throws DocumentLoaderException;
 }

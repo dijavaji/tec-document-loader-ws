@@ -43,7 +43,7 @@ public class DocumentInjectionTest {
 	@Test
 	void createEmbeddingTest() {
 		try {
-			List<Float> response =  this.ollamaService.createEmbedding("hola mundo");
+			List<Double> response =  this.ollamaService.createEmbedding("hola mundo");
 			log.info("convierto vectores {}",response);
 			Assertions.assertNotNull(response);
 		}catch(Exception e) {

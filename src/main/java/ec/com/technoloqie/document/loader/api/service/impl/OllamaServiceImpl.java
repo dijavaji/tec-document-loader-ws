@@ -21,9 +21,9 @@ public class OllamaServiceImpl implements IOllamaService{
 	}
 	
 	@Override
-	public List<Float> createEmbedding(String text) throws DocumentLoaderException {
-		Response<Embedding> response = embeddingModel.embed(text);
-		return response.content().vectorAsList();
+	public List<Double> createEmbedding(String text) throws DocumentLoaderException {
+		Response<Embedding> response = this.embeddingModel.embed(text);
+		return response.content().vectorAsList().stream().map(Double::valueOf).toList();
 	}
 
 }

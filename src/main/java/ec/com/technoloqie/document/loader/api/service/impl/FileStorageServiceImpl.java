@@ -170,9 +170,8 @@ public class FileStorageServiceImpl implements IFileStorageService{
 
 	private List<Document> convertTxt(Resource resource) {
 		TextReader textReader = new TextReader(resource);
-        textReader.getCustomMetadata().put("filename", resource.getFilename());
-        List<Document> documents = textReader.get();
-		return documents;
+        textReader.getCustomMetadata().put("file_name", resource.getFilename());
+		return textReader.get();
 	}
 
 }

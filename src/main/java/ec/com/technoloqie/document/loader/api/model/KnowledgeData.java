@@ -9,7 +9,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.util.CollectionUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,14 +39,14 @@ public class KnowledgeData {
 	 */
 	//@JsonProperty(index = 100)
 	@Field("embedding")
-	private List<Float> embedding = new ArrayList<>();
+	private List<Double> embedding = new ArrayList<>();
 	
 	public static KnowledgeData fromDomainModel(org.springframework.ai.document.Document doc) {
 		KnowledgeData documentBase= new KnowledgeData();
 		documentBase.setContent(doc.getText());
 		//TODO comentado error doc.getEmbedding() en snapshot
 		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(doc.getEmbedding());
-		List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(null);
+		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(null);
 		//documentBase.setEmbedding(embeddings);
 		//documentBase.setMedia(doc.getMedia(null));
 		documentBase.setMetadata(doc.getMetadata());
