@@ -6,6 +6,8 @@ import ec.com.technoloqie.document.loader.api.dto.IntentDto;
 import ec.com.technoloqie.document.loader.api.model.Intent;
 
 public class IntentMapper {
+	
+	private IntentMapper() {}
 
 	public static Intent mapToIntent(IntentDto intentdto) {
 		Intent intent = new Intent();

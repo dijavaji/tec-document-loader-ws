@@ -41,6 +41,9 @@ public class KnowledgeData {
 	@Field("embedding")
 	private List<Double> embedding = new ArrayList<>();
 	
+	@Field("fileId")
+	private Integer fileId;
+	
 	public static KnowledgeData fromDomainModel(org.springframework.ai.document.Document doc) {
 		KnowledgeData documentBase= new KnowledgeData();
 		documentBase.setContent(doc.getText());

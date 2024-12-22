@@ -73,9 +73,9 @@ class TecDocumentLoaderWsApplicationTests {
 			//File file = new File("src/test/resources/input.txt");
 			//FileInputStream input = new FileInputStream(file);
 			//MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
-			MultipartFile multipartFile = new MockMultipartFile("questionData.csv", new FileInputStream(new File("/home/diego/Downloads/questionData.csv")));
+			MultipartFile multipartFile = new MockMultipartFile("questionData.csv", new FileInputStream(new File("/var/opt/apptmp/questionData.csv")));
 			
-			this.storageService.save(multipartFile);
+			this.storageService.saveCsv(multipartFile);
 		}catch(Exception e) {
 			log.error("Error readFileAndSaveCsvTest. {}",e );
 			Assertions.assertTrue(Boolean.TRUE,"readFileAndSaveCsvTest.");
@@ -109,16 +109,18 @@ class TecDocumentLoaderWsApplicationTests {
 			//File file = new File("src/test/resources/input.txt");
 			//FileInputStream input = new FileInputStream(file);
 			//MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
-			//MultipartFile multipartFile1 = new MockMultipartFile("codigo_civil_colombia.pdf", "/home/codigo_civil_colombia.pdf","application/pdf",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/codigo_civil_colombia.pdf")));
-			//MultipartFile multipartFile2 = new MockMultipartFile("ley-minera.pdf","/home/ley-minera.pdf" ,"application/pdf",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/ley-minera.pdf")));
-			MultipartFile multipartFile3 = new MockMultipartFile("ley-minera.txt","/home/ley-minera.txt" ,"text/plain",new FileInputStream(new File("/home/diego/workspaceSts4/tec-document-loader-ws/src/main/resources/docs/ley-minera.txt")));
+			MultipartFile multipartFile1 = new MockMultipartFile("codigo_civil_colombia.pdf", "/home/codigo_civil_colombia.pdf","application/pdf",new FileInputStream(new File("/var/opt/apptmp/codigo_civil_colombia.pdf")));
+			//MultipartFile multipartFile2 = new MockMultipartFile("ley-minera.pdf","/home/ley-minera.pdf" ,"application/pdf",new FileInputStream(new File("/var/opt/apptmp/ley-minera.pdf")));
+			//MultipartFile multipartFile3 = new MockMultipartFile("ley-minera.txt","/home/ley-minera.txt" ,"text/plain",new FileInputStream(new File("/var/opt/apptmp/ley-minera.txt")));
+			
+			//MultipartFile multipartFile4 = new MockMultipartFile("Ejemplo.doc","/home/Ejemplo.doc" ,"application/msword",new FileInputStream(new File("/var/opt/apptmp/Ejemplo.doc")));
 			
 			Collection <MultipartFile> docs= new ArrayList<>();
 			
-			//docs.add(multipartFile1);
+			docs.add(multipartFile1);
 			//docs.add(multipartFile2);
-			docs.add(multipartFile3);
-			this.storageService.storeDocuments(docs);
+			//docs.add(multipartFile4);
+			this.storageService.saveDocuments(docs);
 			log.info("fin readFilesAndSaveMultipartTest. tiempo: {}", System.currentTimeMillis() - time);
 		}catch(Exception e) {
 			log.error("Error readFilesAndSaveMultipartTest. {}",e );

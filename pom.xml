@@ -74,6 +74,11 @@
     		<artifactId>spring-ai-pdf-document-reader</artifactId>
 		</dependency>
 		
+		<dependency>
+    		<groupId>org.springframework.ai</groupId>
+    		<artifactId>spring-ai-tika-document-reader</artifactId>
+		</dependency>
+		
 		<!--dependency>
     		<groupId>org.springframework.ai</groupId>
     		<artifactId>spring-ai-ollama</artifactId>
@@ -106,10 +111,10 @@
 		</dependency>
 		
 		<dependency>
-            	<groupId>dev.langchain4j</groupId>
-            	<artifactId>langchain4j-core</artifactId>
-            	<version>0.35.0</version>
-        	</dependency>
+    		<groupId>dev.langchain4j</groupId>
+    		<artifactId>langchain4j-core</artifactId>
+    		<version>0.35.0</version>
+		</dependency>
 
 	</dependencies>
 	<dependencyManagement>

@@ -2,6 +2,7 @@ package ec.com.technoloqie.document.loader.api.repository.dao.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,11 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileStorageDaoImpl implements IFileStorageDao{
 	
-	private static final String uploadDir = "uploads/";
-
 	@Override
 	public String storeFile(MultipartFile file) throws DocumentLoaderException {
-		
+		String uploadDir = "";
 		try {
 			// Validar tipo de archivo
 	        String fileType = file.getContentType();
@@ -40,6 +39,29 @@ public class FileStorageDaoImpl implements IFileStorageDao{
 	        // Guardar archivo
 	        Path path = Paths.get(uploadDir + file.getOriginalFilename());
 	        Files.copy(file.getInputStream(), path);
+	        return path.toString();
+		}catch(IOException e) {
+			log.error("Error al momento de guardar archivo en disco {}",e);
+			throw new DocumentLoaderException("Error al momento de guardar archivo en disco",e);
+		}
+	}
+
+	@Override
+	public String storeFile(InputStream fileStream, String fileName, String fileType, String filePath, String uploadDir)
+			throws DocumentLoaderException {
+		try {
+			//if (!fileName.endsWith(".pdf") && !fileName.endsWith(".txt") && !fileName.endsWith(".doc"))
+	        // Crear directorio si no existe
+	        File dir = new File(uploadDir);
+	        if (!dir.exists()) {
+	            dir.mkdirs();
+	        }
+
+			// Guardar archivo fisicamente
+			Path path = Paths.get(filePath);
+	        //Path path = Paths.get(uploadDir + file.getOriginalFilename());
+	        Files.copy(fileStream, path);
+	        //Files.write(path, file.getBytes());
 	        return path.toString();
 		}catch(IOException e) {
 			log.error("Error al momento de guardar archivo en disco {}",e);

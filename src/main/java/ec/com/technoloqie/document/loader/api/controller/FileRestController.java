@@ -1,6 +1,5 @@
 package ec.com.technoloqie.document.loader.api.controller;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ec.com.technoloqie.document.loader.api.dto.FileDto;
 import ec.com.technoloqie.document.loader.api.service.impl.FileStorageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +41,7 @@ public class FileRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}*/
 		try {
-			this.storageService.save(file);
+			this.storageService.saveCsv(file);
 
 			message = "Uploaded the file successfully: " + file.getOriginalFilename();
 			response.put("message", "Archivo subido correcto");
@@ -58,18 +59,19 @@ public class FileRestController {
 	}
 	
 	
-	@PostMapping("/uploads")
-    public ResponseEntity<?> uploadFile(@RequestParam("files") Collection <MultipartFile> files) {
+	@PostMapping("/{assistantId}/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable Integer assistantId) {
 		Map<String, Object> response = new HashMap<>();
+		String createdBy = "be-app";	//TODO tomar de cabecera http y anotacion spring
 		try {
-            Collection <String> filePaths = storageService.storeFiles(files);
+            FileDto filePaths = storageService.saveFile(file, assistantId, createdBy);
             response.put("message", "Archivos guardados en: " );
 			response.put("data", filePaths);
 			response.put("success", Boolean.TRUE);
 			
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
         } catch (Exception e) {
-        	log.error("Error al momento de subir archivos. {}",e);
+        	log.error("Error al momento de subir archivos.",e);
 			response.put("message", "Error al momento de subir archivos.");
 			response.put("error", e.getMessage() +" : " + e);
 			response.put("success", Boolean.FALSE);
