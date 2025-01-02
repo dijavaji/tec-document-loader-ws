@@ -18,7 +18,7 @@ public interface IFileStorageService {
 	
 	Collection<String> storeFiles(Collection<MultipartFile> files)throws DocumentLoaderException;
 	
-	List<KnowledgeData> saveDocuments(Collection<MultipartFile> files) throws DocumentLoaderException;
+	List<KnowledgeData> saveDocuments(Collection<MultipartFile> files, int fileId) throws DocumentLoaderException;
 	
 	FileDto saveFile(MultipartFile file, Integer assistantId, String createdBy) throws DocumentLoaderException;
 	

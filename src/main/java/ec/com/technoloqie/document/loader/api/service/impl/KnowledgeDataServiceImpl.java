@@ -39,8 +39,8 @@ public class KnowledgeDataServiceImpl implements IKnowledgeDataService{
 		        TextSplitter textSplitter =  new TokenTextSplitter(1000, 1000, 5, 1000, true);//new TokenTextSplitter(300, 300, 5, 1000, true);
 		        List<Document> splitDocuments = textSplitter.apply(documents);
 		        //splitDocuments.stream().forEach(doc -> {doc.setEmbedding(embedder.createEmbedding(doc.getContent()).block());});
-				List<KnowledgeData> embedDocuments = splitDocuments.stream().map((doc) -> {
-					KnowledgeData nuevoDoc = KnowledgeData.fromDomainModel(doc);
+				List<KnowledgeData> embedDocuments = splitDocuments.stream().map(doc -> {
+					KnowledgeData nuevoDoc = KnowledgeData.fromDomainModel(doc, 0);
 					//nuevoDoc.setEmbedding(this.iAIService.createEmbedding(doc.getText()).block());
 					nuevoDoc.setEmbedding(this.ollamaService.createEmbedding(doc.getText()));
 					return nuevoDoc;
@@ -50,12 +50,12 @@ public class KnowledgeDataServiceImpl implements IKnowledgeDataService{
 	}
 
 	@Override
-	public List<KnowledgeData> createVectorKnowledgeData(List<Document> documents) throws DocumentLoaderException {
+	public List<KnowledgeData> createVectorKnowledgeData(List<Document> documents, int fileId) throws DocumentLoaderException {
 		TextSplitter textSplitter =  new TokenTextSplitter(1000, 1000, 5, 1000, true);//new TokenTextSplitter(300, 300, 5, 1000, true);
         List<Document> splitDocuments = textSplitter.apply(documents);
         //splitDocuments.stream().forEach(doc -> {doc.setEmbedding(embedder.createEmbedding(doc.getContent()).block());});
-		List<KnowledgeData> embedDocuments = splitDocuments.stream().map((doc) -> {
-			KnowledgeData nuevoDoc = KnowledgeData.fromDomainModel(doc);
+		List<KnowledgeData> embedDocuments = splitDocuments.stream().map(doc -> {
+			KnowledgeData nuevoDoc = KnowledgeData.fromDomainModel(doc, fileId);
 			//nuevoDoc.setEmbedding(this.iAIService.createEmbedding(doc.getText()).block());
 			nuevoDoc.setEmbedding(this.ollamaService.createEmbedding(doc.getText()));
 			return nuevoDoc;
