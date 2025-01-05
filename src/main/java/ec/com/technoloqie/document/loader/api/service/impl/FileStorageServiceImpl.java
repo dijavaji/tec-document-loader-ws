@@ -19,6 +19,7 @@ import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderEx
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
 import ec.com.technoloqie.document.loader.api.dto.PhraseDto;
 import ec.com.technoloqie.document.loader.api.dto.ResponseDto;
+import ec.com.technoloqie.document.loader.api.repository.dao.IFileStorageDao;
 import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	//private final Path root = Paths.get("uploads");
 	@Autowired
 	private IIntentService intentService;
+	@Autowired
+	private IFileStorageDao fileStorageDao;
 
 	@Override
 	public void save(MultipartFile file) {
@@ -109,6 +112,11 @@ public class FileStorageServiceImpl implements IFileStorageService{
 			log.error("Error al momento de guardar conocimiento masivo",e);
 			throw new DocumentLoaderException("Error al momento de guardar conocimiento masivo",e);
 		}
+	}
+
+	@Override
+	public Collection<String> storeFiles(Collection<MultipartFile> files) {
+		return files.stream().map(file -> this.fileStorageDao.storeFile(file)).collect(Collectors.toList());
 	}
 
 }
