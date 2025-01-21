@@ -43,7 +43,7 @@ public class KnowledgeData {
 	
 	public static KnowledgeData fromDomainModel(org.springframework.ai.document.Document doc) {
 		KnowledgeData documentBase= new KnowledgeData();
-		documentBase.setContent(doc.getContent());
+		documentBase.setContent(doc.getText());
 		//TODO comentado error doc.getEmbedding() en snapshot
 		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(doc.getEmbedding());
 		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(null);

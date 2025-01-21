@@ -7,11 +7,18 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.reader.ExtractedTextFormatter;
+import org.springframework.ai.reader.TextReader;
+import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
+import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,9 +26,11 @@ import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderEx
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
 import ec.com.technoloqie.document.loader.api.dto.PhraseDto;
 import ec.com.technoloqie.document.loader.api.dto.ResponseDto;
+import ec.com.technoloqie.document.loader.api.model.KnowledgeData;
 import ec.com.technoloqie.document.loader.api.repository.dao.IFileStorageDao;
 import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
+import ec.com.technoloqie.document.loader.api.service.IKnowledgeDataService;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -33,6 +42,9 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	private IIntentService intentService;
 	@Autowired
 	private IFileStorageDao fileStorageDao;
+	
+	@Autowired
+	private IKnowledgeDataService knowledgeDataService;
 
 	@Override
 	public void save(MultipartFile file) {
@@ -117,6 +129,49 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	@Override
 	public Collection<String> storeFiles(Collection<MultipartFile> files) {
 		return files.stream().map(file -> this.fileStorageDao.storeFile(file)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<KnowledgeData> storeDocuments(Collection<MultipartFile> files) {
+		List<Document> documents = new ArrayList<>();
+		try {
+			for (MultipartFile file : files) {
+				
+				String fileType = file.getContentType();
+				if(fileType.equals("text/plain")) {
+					documents.addAll(convertTxt(file.getResource()));
+				}
+				if(fileType.equals("application/pdf")) {
+					documents.addAll(convertPdf(file.getResource()));
+				}
+				
+			}
+		}catch(Exception e) {
+			log.error("Error al momento de guardar documentos",e);
+			throw new DocumentLoaderException("Error al momento de guardar documentos",e);
+		}
+		return this.knowledgeDataService.createVectorKnowledgeData(documents);
+	}
+	
+	
+	private List<Document> convertPdf(Resource resource) {
+		PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource,
+				PdfDocumentReaderConfig.builder()
+					.withPageTopMargin(0)
+					.withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
+						.withNumberOfTopTextLinesToDelete(0)
+						.build())
+					.withPagesPerDocument(1)
+					.build());
+		List<Document> documentls = pdfReader.get();
+        log.info("nro hojas {}", documentls.size());
+		return documentls;
+	}
+
+	private List<Document> convertTxt(Resource resource) {
+		TextReader textReader = new TextReader(resource);
+        textReader.getCustomMetadata().put("file_name", resource.getFilename());
+		return textReader.get();
 	}
 
 }
