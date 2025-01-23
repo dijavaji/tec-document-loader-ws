@@ -1,6 +1,6 @@
 package ec.com.technoloqie.document.loader.api.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,11 @@ import lombok.Setter;
 @Setter
 public class FileDto {
 	
-	private MultipartFile file;
+	private int id;
 	private int assistantId;
+	private String fileName;
+	private String fileType;
+	private String filePath;
 	private String createdBy;
+	private Date createdDate;
 }
