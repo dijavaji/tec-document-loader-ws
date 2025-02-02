@@ -1,12 +1,13 @@
 package ec.com.technoloqie.document.loader.api.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ec.com.technoloqie.document.loader.api.dto.FileDto;
+import ec.com.technoloqie.document.loader.api.service.IFileService;
 import ec.com.technoloqie.document.loader.api.service.impl.FileStorageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/files")
 @Slf4j
 public class FileRestController {
-
-	@Autowired
+	
 	private FileStorageServiceImpl storageService;
+	private IFileService fileService;
+	
+	public FileRestController(FileStorageServiceImpl storageService,IFileService fileService){
+		this.storageService = storageService;
+		this.fileService = fileService;
+	}
+
 
 	@PostMapping("/upload-csv")
 	public ResponseEntity<?> uploadFaqFile(@RequestParam("file") MultipartFile file) {
@@ -78,5 +86,16 @@ public class FileRestController {
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         } 
     }
+	
+	@GetMapping("/assistant/{assistantId}")
+	public ResponseEntity<?> getAllFilebyAssistant(@PathVariable String assistantId) {
+		Map<String, Object> response = new HashMap<>();
+		List<FileDto> filedtos = this.fileService.getFileByAssistantName(assistantId);
+		response.put("message", "Consulta correcta");
+		response.put("data", filedtos);
+		response.put("success", Boolean.TRUE);
+		//return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		return ResponseEntity.ok(response);
+	}
 
 }
