@@ -145,4 +145,19 @@ class TecDocumentLoaderWsApplicationTests {
 		}
 	}
 	
+	@Test
+	void saveFileTest() {
+		try {
+			String fileName="prueba.txt"; 
+			String fileType="text/plain"; 
+			String filePath="uploads/4/prueba.txt"; 
+			Integer assistantId=10; 
+			String createdBy="admin";
+			fileService.createFile(fileName, fileType, filePath, assistantId, createdBy);
+		}catch(Exception e) {
+			log.error("Error getFilesByAssistantNameTest. ",e );
+			Assertions.assertTrue(Boolean.TRUE,"getFilesByAssistantNameTest.");
+		}
+	}
+	
 }

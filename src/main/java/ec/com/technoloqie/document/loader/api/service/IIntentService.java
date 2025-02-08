@@ -11,7 +11,7 @@ public interface IIntentService {
 	IntentDto updateIntent(IntentDto intentdto, int id)throws DocumentLoaderException;
 	void deleteIntent(Integer code)throws DocumentLoaderException;
 	List<IntentDto> getListIntents()throws DocumentLoaderException;
-	//AccountDto findOneByAccNumber(Integer code);
+	
 	IntentDto getIntentById(Integer code) throws DocumentLoaderException;
 	
 	IntentDto createIntentKnowledge(IntentDto intent) throws DocumentLoaderException;
