@@ -1,6 +1,7 @@
 package ec.com.technoloqie.document.loader.api.mapper;
 
 import ec.com.technoloqie.document.loader.api.dto.AssistantDto;
+import ec.com.technoloqie.document.loader.api.dto.IntentKnowlegeDto;
 import ec.com.technoloqie.document.loader.api.model.Assistant;
 
 public class AssistantMapper {
@@ -27,5 +28,5 @@ public class AssistantMapper {
 		assistant.setCreatedDate(assistantdto.getCreatedDate());
 		return assistant ;
 	}
-
+	
 }

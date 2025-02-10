@@ -1,5 +1,6 @@
 package ec.com.technoloqie.document.loader.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="SCBTRESPONSE")
-public class Response {
+public class Response implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -66,4 +67,5 @@ public class Response {
 		createdDate = new Date();
 		status = Boolean.TRUE;
 	}
+	private static final long serialVersionUID = -6047517732354318886L;
 }

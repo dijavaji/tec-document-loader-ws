@@ -1,6 +1,7 @@
 package ec.com.technoloqie.document.loader.api.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -8,12 +9,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderException;
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
+import ec.com.technoloqie.document.loader.api.dto.IntentKnowlegeDto;
 import ec.com.technoloqie.document.loader.api.dto.PhraseDto;
 import ec.com.technoloqie.document.loader.api.dto.ResponseDto;
 import ec.com.technoloqie.document.loader.api.mapper.IntentMapper;
@@ -27,32 +28,30 @@ import ec.com.technoloqie.document.loader.api.repository.IPhraseRepository;
 import ec.com.technoloqie.document.loader.api.repository.IResponseRepository;
 import ec.com.technoloqie.document.loader.api.repository.dao.IIntentDao;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
-import ec.com.technoloqie.document.loader.api.service.IPhraseService;
-import ec.com.technoloqie.document.loader.api.service.IResponseService;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class IntentServiceImpl implements IIntentService{
 	
-	@Autowired
 	private IIntentRepository intentRepository;
-	@Autowired
-	private IIntentDao intentDao;
-	@Autowired
 	private IPhraseRepository phraseRepository;
-	@Autowired
-	private IPhraseService phraseService;
-	@Autowired
-	private IResponseService responseService;
-	@Autowired
 	private IResponseRepository responseRepository;
+	private IIntentDao intentDao;
+	
+	public IntentServiceImpl(IIntentRepository intentRepository, IPhraseRepository phraseRepository, IResponseRepository responseRepository, IIntentDao intentDao){
+		this.intentRepository = intentRepository;
+		this.phraseRepository = phraseRepository;
+		this.responseRepository = responseRepository;
+		this.intentDao = intentDao;
+	}
 
 	@Override
 	@Transactional
 	public IntentDto createIntent(IntentDto intentdto) throws DocumentLoaderException {
 		IntentDto newIntent = null;
 		try {
+			//TODO buscar asistente por id
 			Intent intent = IntentMapper.mapToIntent(intentdto);
 			Intent savedIntent = this.intentRepository.save(intent);
 			newIntent = IntentMapper.mapToIntentDto(savedIntent);
@@ -97,7 +96,7 @@ public class IntentServiceImpl implements IIntentService{
 	
 	private Collection <Response> searchUpdateResponses(Collection <ResponseDto> dtoresponses, Collection <Response> responses, String modifiby) {
 		log.info("actualizo respuestas {}", responses.size());
-		 Collection <Response> updateResponses = dtoresponses.stream().map(dto ->{
+		return dtoresponses.stream().map(dto ->{
 			Optional<Response> optResponse = responses.stream().filter(response -> response.getId()==dto.getId()).findFirst();
 			Response updateResponse = optResponse.get();
 			updateResponse.setResponse(dto.getResponse());
@@ -105,7 +104,6 @@ public class IntentServiceImpl implements IIntentService{
 			updateResponse.setModifiedDate(new Date());
 			return updateResponse;
 		}).collect(Collectors.toList());
-		 return updateResponses;
 	}
 
 	@Override
@@ -153,6 +151,7 @@ public class IntentServiceImpl implements IIntentService{
 		IntentDto newIntentDto = null;
 		try {
 			log.info("creo intencion {}", intentDto.getPhrases());
+			//TODO buscar asistente por id
 			Intent intent = IntentMapper.mapToIntent(intentDto);
 			Intent savedIntent = this.intentRepository.save(intent);
 			
@@ -187,6 +186,23 @@ public class IntentServiceImpl implements IIntentService{
 			throw new DocumentLoaderException("Error al momento de guardar intenciones",e);
 		}
 		return newIntentDto;
+	}
+
+	@Override
+	public List<IntentDto> getListIntents(Integer assistantId) throws DocumentLoaderException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<IntentKnowlegeDto> getListIntentKnowlege(Integer assistantId) throws DocumentLoaderException {
+		List<IntentKnowlegeDto> intentKnowleges = new ArrayList<>();
+		List <Intent> intents = intentDao.findIntentsKnowlegeByAssistant(assistantId);
+		for (Intent intent : intents) {
+			intentKnowleges.addAll(IntentMapper.mapToListIntentKnowlegeDto(intent)) ;
+		}
+		return intentKnowleges;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package ec.com.technoloqie.document.loader.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -28,8 +29,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="SCBTFILE")
-public class FileEntity {
+public class FileEntity implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name="FILEID",nullable=false, unique=true)

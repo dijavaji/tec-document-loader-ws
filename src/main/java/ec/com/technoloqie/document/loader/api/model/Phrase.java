@@ -31,8 +31,6 @@ import lombok.NoArgsConstructor;
 @Table(name="SCBTPHRASE")
 public class Phrase implements Serializable{
 	
-	private static final long serialVersionUID = -5443070484930045796L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name="PHRASEID",nullable=false, unique=true)
@@ -76,4 +74,6 @@ public class Phrase implements Serializable{
 		createdDate = new Date();
 		status = Boolean.TRUE;
 	}
+	
+	private static final long serialVersionUID = -5443070484930045796L;
 }

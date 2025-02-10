@@ -11,6 +11,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -40,8 +42,8 @@ public class Intent implements Serializable{
 	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column(name="ASSISTANTID")
-	private Integer assistantId;
+	//@Column(name="ASSISTANTID")
+	//private Integer assistantId;
 	
 	@NotEmpty(message ="no puede estar vacio")
 	@NotNull(message = "no puede ser nulo")
@@ -62,14 +64,10 @@ public class Intent implements Serializable{
 	@Column(name="STATUS")
 	private Boolean status;
 	
-	/*@ManyToOne
-	@JoinColumn(name="ACCTYPID",nullable=false)
-	private AccountType accountType;
-	
 	@ManyToOne
-	@JoinColumn(name="CUSTOMERID",nullable=false)
-	private Customer customer;
-	*/
+	@JoinColumn(name="ASSISTANTID",nullable=false)
+	private Assistant assistant;
+
 	@OneToMany(mappedBy = "intent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "INTENTID")
 	private Collection<Phrase> phrases;
