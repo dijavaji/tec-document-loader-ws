@@ -40,8 +40,10 @@ public class IntentMapper {
 	public static Collection <IntentKnowlegeDto> mapToListIntentKnowlegeDto(Intent intent) {
 		return intent.getPhrases().stream().map(phrase ->{
 			IntentKnowlegeDto intentKnowlege = new IntentKnowlegeDto();
-			intentKnowlege.setId(intent.getId());
+			intentKnowlege.setCreatedBy(intent.getCreatedBy());
+			intentKnowlege.setCreatedDate(intent.getCreatedDate());
 			intentKnowlege.setName(intent.getName());
+			intentKnowlege.setId(phrase.getId());
 			intentKnowlege.setQuery(phrase.getPhrase());
 			Response response = phrase.getResponses().iterator().next();
 			intentKnowlege.setResponse(response.getResponse());

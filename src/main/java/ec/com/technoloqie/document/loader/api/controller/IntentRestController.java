@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
+import ec.com.technoloqie.document.loader.api.dto.IntentKnowlegeDto;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -115,6 +116,25 @@ public class IntentRestController {
 	public ResponseEntity<?> updateIntent(@RequestBody IntentDto intentDto, @PathVariable Integer id) {
 		IntentDto intent = this.intentService.updateIntent(intentDto, id);
 		return ResponseEntity.ok(intent);
+	}
+	
+	@GetMapping("/knowlege/{assistantId}")
+	public ResponseEntity<?> getIntentKnowlege(@PathVariable Integer assistantId) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<IntentKnowlegeDto> intents = this.intentService.getListIntentKnowlege(assistantId);
+			response.put("message", "Consulta correcta");
+			response.put("data", intents);
+			response.put("success", Boolean.TRUE);
+			return ResponseEntity.ok(response); 
+		}catch(Exception e) {
+			log.error("Error busqueda de intencion conocimiento.",e );
+			response.put("message", "Error busqueda de intencion conocimiento.");
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 
 }
