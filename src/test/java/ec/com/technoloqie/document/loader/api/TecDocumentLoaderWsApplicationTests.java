@@ -120,7 +120,7 @@ class TecDocumentLoaderWsApplicationTests {
 			docs.add(multipartFile1);
 			//docs.add(multipartFile2);
 			//docs.add(multipartFile4);
-			this.storageService.saveDocuments(docs);
+			this.storageService.saveDocuments(docs,0);
 			log.info("fin readFilesAndSaveMultipartTest. tiempo: {}", System.currentTimeMillis() - time);
 		}catch(Exception e) {
 			log.error("Error readFilesAndSaveMultipartTest. {}",e );

@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -54,12 +56,14 @@ public class FileEntity {
 	@Column(name="CREATEDBY",nullable=false)
 	private String createdBy;
 	@CreatedDate
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CREATEDDATE",nullable=false)
 	private Date createdDate;
 	@LastModifiedBy
 	@Column(name="MODIFIEDBY")
 	private String modifiedBy;
 	@LastModifiedDate
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="MODIFIEDDATE")
 	private Date modifiedDate;
 	

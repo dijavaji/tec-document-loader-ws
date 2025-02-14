@@ -72,7 +72,7 @@ public class FileRestController {
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
         } catch (Exception e) {
         	log.error("Error al momento de subir archivos.",e);
-			response.put("message", "Error al momento de subir archivos.");
+			response.put("message", e.getMessage());
 			response.put("error", e.getMessage() +" : " + e);
 			response.put("success", Boolean.FALSE);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);

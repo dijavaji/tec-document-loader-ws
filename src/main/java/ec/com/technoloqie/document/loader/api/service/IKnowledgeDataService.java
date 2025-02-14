@@ -11,5 +11,5 @@ public interface IKnowledgeDataService {
 	
 	List<KnowledgeData> createVectorKnowledgeData(String fileName) throws DocumentLoaderException;
 	
-	List<KnowledgeData> createVectorKnowledgeData(List<Document> documents) throws DocumentLoaderException;
+	List<KnowledgeData> createVectorKnowledgeData(List<Document> documents, int fileId) throws DocumentLoaderException;
 }

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,12 +48,14 @@ public class FileStorageDaoImpl implements IFileStorageDao{
 	}
 
 	@Override
-	public String storeFile(InputStream fileStream, String fileName, String fileType, String filePath, String uploadDir)
+	public String storeFile(InputStream fileStream, String fileName, String fileType, String filePath)
 			throws DocumentLoaderException {
 		try {
 			//if (!fileName.endsWith(".pdf") && !fileName.endsWith(".txt") && !fileName.endsWith(".doc"))
 	        // Crear directorio si no existe
-	        File dir = new File(uploadDir);
+			String replacedDir = StringUtils.replace(filePath, fileName, ""); 
+			log.info("crea directorio------{}", replacedDir);
+	        File dir = new File(replacedDir);
 	        if (!dir.exists()) {
 	            dir.mkdirs();
 	        }
@@ -60,8 +63,8 @@ public class FileStorageDaoImpl implements IFileStorageDao{
 			// Guardar archivo fisicamente
 			Path path = Paths.get(filePath);
 	        //Path path = Paths.get(uploadDir + file.getOriginalFilename());
-	        Files.copy(fileStream, path);
-	        //Files.write(path, file.getBytes());
+	        //Files.copy(fileStream, path);
+	        Files.write(path, fileStream.readAllBytes());
 	        return path.toString();
 		}catch(IOException e) {
 			log.error("Error al momento de guardar archivo en disco {}",e);

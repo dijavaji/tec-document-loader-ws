@@ -44,9 +44,10 @@ public class KnowledgeData {
 	@Field("fileId")
 	private Integer fileId;
 	
-	public static KnowledgeData fromDomainModel(org.springframework.ai.document.Document doc) {
+	public static KnowledgeData fromDomainModel(org.springframework.ai.document.Document doc, int fileId) {
 		KnowledgeData documentBase= new KnowledgeData();
 		documentBase.setContent(doc.getText());
+		documentBase.setFileId(fileId);
 		//TODO comentado error doc.getEmbedding() en snapshot
 		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(doc.getEmbedding());
 		//List <Double> embeddings= (List<Double>) CollectionUtils.arrayToList(null);

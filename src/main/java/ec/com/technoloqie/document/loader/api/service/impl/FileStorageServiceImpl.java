@@ -50,10 +50,11 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	private IKnowledgeDataService knowledgeDataService;
 	private IFileService fileService; 
 	
-	public FileStorageServiceImpl(IIntentService intentService, IFileStorageDao fileStorageDao, IKnowledgeDataService knowledgeDataService) {
+	public FileStorageServiceImpl(IIntentService intentService, IFileStorageDao fileStorageDao, IKnowledgeDataService knowledgeDataService, IFileService fileService) {
 		this.intentService = intentService;
 		this.fileStorageDao = fileStorageDao;
 		this.knowledgeDataService = knowledgeDataService;
+		this.fileService =fileService;
 	}
 
 	@Override
@@ -142,12 +143,12 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	}
 
 	@Override
-	public List<KnowledgeData> saveDocuments(Collection<MultipartFile> files) throws DocumentLoaderException{
+	public List<KnowledgeData> saveDocuments(Collection<MultipartFile> files, int fileId) throws DocumentLoaderException{
 		if (org.springframework.util.CollectionUtils.isEmpty(files)) {
 	            throw new DocumentLoaderException("Error los archivos no pueden estar vacios");
 	        }
 		List<Document> documents = convertMultipartFiletoDocuments(files);
-		return this.knowledgeDataService.createVectorKnowledgeData(documents);
+		return this.knowledgeDataService.createVectorKnowledgeData(documents,fileId);
 	}
 	
 	private List<Document> convertMultipartFiletoDocuments(Collection<MultipartFile> files) {
@@ -215,7 +216,7 @@ public class FileStorageServiceImpl implements IFileStorageService{
 		assert fileName != null;
 
 		String fileType = file.getContentType();
-		String filePath = UPLOAD_DIR + File.separator + fileName;
+		String filePath = UPLOAD_DIR + String.valueOf(assistantId) + File.separator + fileName;
 		
 		// Validar extensiones permitidas
         if (!fileType.equals("application/pdf") && 
@@ -225,16 +226,18 @@ public class FileStorageServiceImpl implements IFileStorageService{
         }
         
         try {
-			this.fileStorageDao.storeFile(file.getInputStream(), fileName, fileType, filePath, UPLOAD_DIR);
+			this.fileStorageDao.storeFile(file.getInputStream(), fileName, fileType, filePath);
 		} catch (Exception e) {
 			log.error("Error en guardado de archivo fisico",e);
 		}
+     // Guardar detalles en la base de datos
+        FileDto fileDto = fileService.createFile(fileName, fileType, filePath, assistantId, createdBy);
+        
         //guardado vectorial
         Collection<MultipartFile> files = Arrays.asList(file); 
-        this.saveDocuments(files);
+        this.saveDocuments(files, fileDto.getId());
 		
-		// Guardar detalles en la base de datos
-		return fileService.createFile(fileName, fileType, filePath, assistantId, createdBy);
+		return fileDto;
 	}
 
 	@Override
