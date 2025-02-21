@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -70,6 +71,19 @@ public class FileStorageDaoImpl implements IFileStorageDao{
 			log.error("Error al momento de guardar archivo en disco {}",e);
 			throw new DocumentLoaderException("Error al momento de guardar archivo en disco",e);
 		}
+	}
+
+	@Override
+	public String getEncodeFile(String path) throws DocumentLoaderException {
+		String encoded = null;
+		try {
+			File file = new File(path);
+			encoded = Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath()));
+		}catch(Exception e) {
+			log.error("Error de codificacion de archivo a base64 {}",e);
+			throw new DocumentLoaderException("Error de codificacion de archivo a base64",e);
+		}
+		return encoded;
 	}
 
 }

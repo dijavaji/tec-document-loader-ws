@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ec.com.technoloqie.document.loader.api.dto.FileDto;
+import ec.com.technoloqie.document.loader.api.model.FileEntity;
 import ec.com.technoloqie.document.loader.api.service.IFileService;
-import ec.com.technoloqie.document.loader.api.service.impl.FileStorageServiceImpl;
+import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin("http://127.0.0.1:3000")
@@ -26,10 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileRestController {
 	
-	private FileStorageServiceImpl storageService;
+	private IFileStorageService storageService;
 	private IFileService fileService;
 	
-	public FileRestController(FileStorageServiceImpl storageService,IFileService fileService){
+	public FileRestController(IFileStorageService storageService,IFileService fileService){
 		this.storageService = storageService;
 		this.fileService = fileService;
 	}
@@ -97,5 +98,30 @@ public class FileRestController {
 		//return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping("/upload-route/{assistantId}/{route}")
+    public ResponseEntity<List<FileEntity>> uploadDirectoryFiles(@PathVariable String route, @PathVariable Integer assistantId) {
+		String createdBy = "be-app";	//TODO tomar de cabecera http y anotacion spring
+		List<FileEntity> contenido = storageService.saveFilesFromDirectory(route, assistantId, createdBy);
+        return ResponseEntity.ok(contenido);
+    }
+	
+	@GetMapping("/download/{fileId}")
+    public ResponseEntity<?> downloadFile(@PathVariable Integer fileId) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			FileDto filedto = this.storageService.getDownloadFile(fileId);
+			response.put("message", "Consulta correcta");
+			response.put("data", filedto);
+			response.put("success", Boolean.TRUE);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+        	log.error("Error al momento de consultar archivo.",e);
+			response.put("message", e.getMessage());
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+    }
 
 }

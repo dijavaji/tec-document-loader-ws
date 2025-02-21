@@ -73,7 +73,7 @@ public class DocumentLoaderServiceTest {
 			String fileType="text/plain"; 
 			String filePath="uploads/4/prueba.txt"; 
 			Integer assistantId=10; 
-			String createdBy="admin";
+			String createdBy="test";
 			fileService.createFile(fileName, fileType, filePath, assistantId, createdBy);
 		}catch(Exception e) {
 			log.error("Error getFilesByAssistantNameTest. ",e );

@@ -10,4 +10,6 @@ public interface IFileService {
 	FileDto createFile(String fileName, String fileType, String filePath, Integer assistantId, String createdBy) throws DocumentLoaderException;
 	
 	List<FileDto> getFileByAssistantName(String assistantName) throws DocumentLoaderException;
+	
+	FileDto getFileById(Integer id) throws DocumentLoaderException;
 }

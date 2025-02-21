@@ -23,4 +23,5 @@ public class FileDto {
 	private String filePath;
 	private String createdBy;
 	private Date createdDate;
+	private String fileBase64;
 }
