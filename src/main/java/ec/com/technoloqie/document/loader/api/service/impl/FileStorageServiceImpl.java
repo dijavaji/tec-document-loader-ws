@@ -67,7 +67,7 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	}
 
 	@Override
-	public void saveCsv(MultipartFile file) {
+	public void saveCsv(MultipartFile file) throws DocumentLoaderException{
 		try {
 			log.info("carga de intenciones masivo");
 			//Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
@@ -78,6 +78,11 @@ public class FileStorageServiceImpl implements IFileStorageService{
 			LinkedList<IntentDto> saveintents = new LinkedList<>();
 			while ((line = reader.readLine()) != null) {
 				String[] data = line.split(";");
+				if(data.length <=1) {
+					log.error("Error al guardar archivo el formato no es valido");
+					throw new DocumentLoaderException("Error al guardar archivo el formato no es valido");
+				}
+				
 				String intentName = data[0];
 				
 				Optional<IntentDto> intentSearch = saveintents.stream().filter(intent -> StringUtils.equals(intent.getName(),intentName)).findFirst();
@@ -137,6 +142,8 @@ public class FileStorageServiceImpl implements IFileStorageService{
 				return newIntentDto;
 			}).collect(Collectors.toSet());
 			
+		}catch(DocumentLoaderException e) {
+			throw e;
 		} catch (Exception e) {
 			if (e instanceof FileAlreadyExistsException) {
 				throw new RuntimeException("A file of that name already exists.");
