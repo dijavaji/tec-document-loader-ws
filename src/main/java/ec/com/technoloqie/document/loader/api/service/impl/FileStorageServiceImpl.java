@@ -78,7 +78,7 @@ public class FileStorageServiceImpl implements IFileStorageService{
 			LinkedList<IntentDto> saveintents = new LinkedList<>();
 			while ((line = reader.readLine()) != null) {
 				String[] data = line.split(";");
-				if(data.length <=1) {
+				if(data.length <=1 || data.length >3) {
 					log.error("Error al guardar archivo el formato no es valido");
 					throw new DocumentLoaderException("Error al guardar archivo el formato no es valido");
 				}

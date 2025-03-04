@@ -53,7 +53,7 @@ public class IntentRestController {
 		
 		try {
 			IntentDto intent = this.intentService.createIntentKnowledge(intentDto);
-			response.put("message", "Intencion guardada correctamente");
+			response.put("message", "Intenci\u00f3n guardada correctamente");
 			response.put("data", intent);
 			response.put("success", Boolean.TRUE);
 			
@@ -73,7 +73,7 @@ public class IntentRestController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			IntentDto intentDto = this.intentService.getIntentById(id);
-			response.put("message", "Consulta intencion correctamente");
+			response.put("message", "Consulta intenci\u00f3n correctamente");
 			response.put("data", intentDto);
 			response.put("success", Boolean.TRUE);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
@@ -98,7 +98,7 @@ public class IntentRestController {
 		log.info("elimino intencion.{}", id);
 		try {
 			this.intentService.deleteIntent(id);
-			response.put("message", "Intencion eliminada correctamente");
+			response.put("message", "Intenci\u00f3n eliminada correctamente");
 			response.put("data", id);
 			response.put("success", Boolean.TRUE);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
@@ -114,8 +114,20 @@ public class IntentRestController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateIntent(@RequestBody IntentDto intentDto, @PathVariable Integer id) {
-		IntentDto intent = this.intentService.updateIntent(intentDto, id);
-		return ResponseEntity.ok(intent);
+		Map<String, Object> response = new HashMap<>();
+		try {
+			IntentDto intent = this.intentService.updateIntent(intentDto, id);
+			response.put("message", "Intenci\u00f3n actualizada correctamente");
+			response.put("data", intent);
+			response.put("success", Boolean.TRUE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK); 
+		}catch(Exception e) {
+			log.error("Error actualiza de intencion.",e );
+			response.put("message", "Error actualizado de intencion.");
+			response.put("error", e.getMessage() +" : " + e);
+			response.put("success", Boolean.FALSE);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping("/knowlege/{assistantId}")

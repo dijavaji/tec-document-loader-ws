@@ -59,7 +59,7 @@ public class KnowledgeDataServiceImpl implements IKnowledgeDataService{
 			//nuevoDoc.setEmbedding(this.iAIService.createEmbedding(doc.getText()).block());
 			nuevoDoc.setEmbedding(this.ollamaService.createEmbedding(doc.getText()));
 			return nuevoDoc;
-		}).collect(Collectors.toList());
+		}).toList();
 		log.info("DocumentSplitter {}", embedDocuments.size());
 		return knowledgeDataRepository.saveAll(embedDocuments);
 	}
