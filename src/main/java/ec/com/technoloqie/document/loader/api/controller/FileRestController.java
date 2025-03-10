@@ -36,11 +36,10 @@ public class FileRestController {
 	}
 
 
-	@PostMapping("/upload-csv")
-	public ResponseEntity<?> uploadFaqFile(@RequestParam("file") MultipartFile file) {
-		String message = "";
+	@PostMapping("/upload-csv/{assistantId}")
+	public ResponseEntity<?> uploadFaqFile(@RequestParam("file") MultipartFile file, @PathVariable Integer assistantId) {
 		Map<String, Object> response = new HashMap<>();
-
+		String createdBy = "be-app";	//TODO tomar de cabecera http y anotacion spring
 		/*if (result.hasErrors()) {
 			List<String> errors = result.getFieldErrors().stream()
 					.map(err -> "El campo " + err.getField() + " " + err.getDefaultMessage())
@@ -50,11 +49,10 @@ public class FileRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}*/
 		try {
-			this.storageService.saveCsv(file);
+			this.storageService.saveCsv(file,assistantId, createdBy);
 
-			message = "Uploaded the file successfully: " + file.getOriginalFilename();
 			response.put("message", "Archivo subido correcto");
-			response.put("data", message);
+			response.put("data", "Uploaded the file successfully: " + file.getOriginalFilename());
 			response.put("success", Boolean.TRUE);
 			
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);

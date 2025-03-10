@@ -67,7 +67,7 @@ public class FileStorageServiceImpl implements IFileStorageService{
 	}
 
 	@Override
-	public void saveCsv(MultipartFile file) throws DocumentLoaderException{
+	public void saveCsv(MultipartFile file, Integer assistantId, String createdBy) throws DocumentLoaderException{
 		try {
 			log.info("carga de intenciones masivo");
 			//Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
@@ -93,12 +93,12 @@ public class FileStorageServiceImpl implements IFileStorageService{
 					Collection <PhraseDto> phrases = new ArrayList<>();
 					PhraseDto phraseDto = new PhraseDto();
 					phraseDto.setPhrase(data[1]);
-					phraseDto.setCreatedBy("app-back");
+					phraseDto.setCreatedBy(createdBy);
 					
 					Collection <ResponseDto> responses = new ArrayList<>();
 					ResponseDto responseDto = new ResponseDto();
 					responseDto.setResponse(data[2]);
-					responseDto.setCreatedBy("app-back");
+					responseDto.setCreatedBy(createdBy);
 					responses.add(responseDto);
 					
 					phraseDto.setResponses(responses);
@@ -110,17 +110,17 @@ public class FileStorageServiceImpl implements IFileStorageService{
 					//this.intentService.createIntent(intentDto);
 					IntentDto intentDto = new IntentDto();
 					intentDto.setName(intentName);
-					intentDto.setAssistantId(1);
-					intentDto.setCreatedBy("app-back");
+					intentDto.setAssistantId(assistantId);
+					intentDto.setCreatedBy(createdBy);
 					Collection <PhraseDto> phrases = new ArrayList<>();
 					PhraseDto phraseDto = new PhraseDto();
 					phraseDto.setPhrase(data[1]);
-					phraseDto.setCreatedBy("app-back");
+					phraseDto.setCreatedBy(createdBy);
 					
 					Collection <ResponseDto> responses = new ArrayList<>();
 					ResponseDto responseDto = new ResponseDto();
 					responseDto.setResponse(data[2]);
-					responseDto.setCreatedBy("app-back");
+					responseDto.setCreatedBy(createdBy);
 					
 					responses.add(responseDto);
 					
@@ -138,9 +138,8 @@ public class FileStorageServiceImpl implements IFileStorageService{
 			log.info("intenciones {}", saveintents.size());
 			
 			saveintents.stream().map(intentD ->{
-				IntentDto newIntentDto= this.intentService.createIntentKnowledge(intentD);
-				return newIntentDto;
-			}).collect(Collectors.toSet());
+				return this.intentService.createIntentKnowledge(intentD);
+			}).toList();
 			
 		}catch(DocumentLoaderException e) {
 			throw e;

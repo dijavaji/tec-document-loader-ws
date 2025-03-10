@@ -43,7 +43,7 @@ class TecDocumentLoaderWsApplicationTests {
 			//MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
 			MultipartFile multipartFile = new MockMultipartFile("questionData.csv", new FileInputStream(new File("/var/opt/apptmp/questionData.csv")));
 			
-			this.storageService.saveCsv(multipartFile);
+			this.storageService.saveCsv(multipartFile,3,"test");
 		}catch(Exception e) {
 			log.error("Error readFileAndSaveCsvTest. {}",e );
 			Assertions.assertTrue(Boolean.TRUE,"readFileAndSaveCsvTest.");
