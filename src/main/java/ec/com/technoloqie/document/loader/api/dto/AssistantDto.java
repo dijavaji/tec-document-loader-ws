@@ -14,13 +14,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FileDto {
+public class AssistantDto {
 	
 	private int id;
-	private AssistantDto assistant;
-	private String fileName;
-	private String fileType;
-	private String filePath;
+	private String name;
+	private String label;
+	private String description;
+	private Integer languageId;
+	private Integer assistantTypeId;
 	private String createdBy;
 	private Date createdDate;
+	private String modifiedBy;
+	private Date modifiedDate;
+	private Boolean status;
+
 }

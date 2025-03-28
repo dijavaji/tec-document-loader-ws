@@ -18,7 +18,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
+import ec.com.technoloqie.document.loader.api.dto.FileDto;
 import ec.com.technoloqie.document.loader.api.dto.IntentDto;
+import ec.com.technoloqie.document.loader.api.service.IFileService;
 import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,9 @@ class TecDocumentLoaderWsApplicationTests {
 	
 	@Autowired
 	private IFileStorageService storageService;
+	
+	@Autowired
+	private IFileService fileService;
 	
 	@Test
 	void contextLoads() {
@@ -125,6 +130,18 @@ class TecDocumentLoaderWsApplicationTests {
 		}catch(Exception e) {
 			log.error("Error readFilesAndSaveMultipartTest. {}",e );
 			Assertions.assertTrue(Boolean.TRUE,"readFilesAndSaveMultipartTest.");
+		}
+	}
+	
+	@Test
+	void getFilesByAssistantNameTest() {
+		try {
+			List<FileDto> filels = fileService.getFileByAssistantName("tec_procesos_bot");
+			log.info("getFilesByAssistantNameTest size: {}",filels.size());
+			Assertions.assertNotNull(filels);
+		}catch(Exception e) {
+			log.error("Error getFilesByAssistantNameTest. {}",e );
+			Assertions.assertTrue(Boolean.TRUE,"getFilesByAssistantNameTest.");
 		}
 	}
 	
