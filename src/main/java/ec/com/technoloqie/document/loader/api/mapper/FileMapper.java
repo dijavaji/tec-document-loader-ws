@@ -3,6 +3,7 @@ package ec.com.technoloqie.document.loader.api.mapper;
 import java.util.Date;
 
 import ec.com.technoloqie.document.loader.api.dto.FileDto;
+import ec.com.technoloqie.document.loader.api.model.Assistant;
 import ec.com.technoloqie.document.loader.api.model.FileEntity;
 
 public class FileMapper {
@@ -11,9 +12,10 @@ public class FileMapper {
 		
 	}
 	
-	public static FileEntity mapToFile(String fileName, String fileType, String filePath, Integer assistantId, String createdBy) {
+	public static FileEntity mapToFile(String fileName, String fileType, String filePath, String createdBy, Assistant assistant) {
 		FileEntity fileEntity = new FileEntity();
-		fileEntity.setAssistantId(assistantId);
+		//fileEntity.setAssistantId(assistantId);
+		fileEntity.setAssistant(assistant);
 		fileEntity.setFileName(fileName);
 		fileEntity.setFilePath(filePath);
 		fileEntity.setFileType(fileType);
@@ -28,8 +30,9 @@ public class FileMapper {
 		fileDto.setFileName(savedFile.getFileName());
 		fileDto.setFilePath(savedFile.getFilePath());
 		fileDto.setFileType(savedFile.getFileType());
-		fileDto.setAssistantId(savedFile.getAssistantId());
+		fileDto.setAssistant(AssistantMapper.mapToAssistantDto(savedFile.getAssistant()));
 		fileDto.setCreatedBy(savedFile.getCreatedBy());
+		fileDto.setCreatedDate(savedFile.getCreatedDate());
 		return fileDto;
 	}
 

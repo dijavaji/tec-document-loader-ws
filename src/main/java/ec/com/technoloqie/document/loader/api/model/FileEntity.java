@@ -11,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -47,8 +49,8 @@ public class FileEntity {
 	@Column(name="GCPFILENAME")
 	private String gcpFilename; 
 	
-	@Column(name="ASSISTANTID")
-	private Integer assistantId;
+	//@Column(name="ASSISTANTID")
+	//private Integer assistantId;
 	
 	@NotEmpty(message ="no puede estar vacio")
 	@NotNull(message = "no puede ser nulo")
@@ -66,6 +68,10 @@ public class FileEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="MODIFIEDDATE")
 	private Date modifiedDate;
+	
+	@ManyToOne
+	@JoinColumn(name="ASSISTANTID",nullable=false)
+	private Assistant assistant;
 	
 	@PrePersist 
 	public void prePersist() {
