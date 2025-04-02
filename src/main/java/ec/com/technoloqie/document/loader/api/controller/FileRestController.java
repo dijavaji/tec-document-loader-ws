@@ -87,10 +87,10 @@ public class FileRestController {
         } 
     }
 	
-	@GetMapping("/assistant/{assistantId}")
-	public ResponseEntity<?> getAllFilebyAssistant(@PathVariable String assistantId) {
+	@GetMapping("/assistant/{assistant}")
+	public ResponseEntity<?> getAllFilebyAssistant(@PathVariable String assistant) {
 		Map<String, Object> response = new HashMap<>();
-		List<FileDto> filedtos = this.fileService.getFileByAssistantName(assistantId);
+		List<FileDto> filedtos = this.fileService.getFileByAssistantName(assistant);
 		response.put("message", "Consulta correcta");
 		response.put("data", filedtos);
 		response.put("success", Boolean.TRUE);

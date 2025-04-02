@@ -1,5 +1,6 @@
 package ec.com.technoloqie.document.loader.api.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,8 +28,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="SCBTASSISTANT")
-public class Assistant {
+public class Assistant implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name="ASSISTANTID",nullable=false, unique=true)
@@ -71,6 +74,10 @@ public class Assistant {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ASSISTANTID")
 	private Collection<FileEntity> files;
+	
+	@OneToMany(mappedBy = "assistant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "INTENTID")
+	private Collection<Intent> intents;
 	
 	
 	@PrePersist 

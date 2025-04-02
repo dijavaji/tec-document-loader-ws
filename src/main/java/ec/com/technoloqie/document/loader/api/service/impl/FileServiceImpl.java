@@ -7,11 +7,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import ec.com.technoloqie.document.loader.api.commons.exception.DocumentLoaderException;
+import ec.com.technoloqie.document.loader.api.dto.AssistantDto;
 import ec.com.technoloqie.document.loader.api.dto.FileDto;
+import ec.com.technoloqie.document.loader.api.mapper.AssistantMapper;
 import ec.com.technoloqie.document.loader.api.mapper.FileMapper;
-import ec.com.technoloqie.document.loader.api.model.Assistant;
 import ec.com.technoloqie.document.loader.api.model.FileEntity;
 import ec.com.technoloqie.document.loader.api.repository.IFileRepository;
+import ec.com.technoloqie.document.loader.api.service.IAssistantService;
 import ec.com.technoloqie.document.loader.api.service.IFileService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,18 +22,20 @@ import lombok.extern.slf4j.Slf4j;
 public class FileServiceImpl implements IFileService{
 	
 	private IFileRepository fileRepository;
+	private IAssistantService assistantService;
 	
-	public FileServiceImpl(IFileRepository fileRepository) {
+	public FileServiceImpl(IFileRepository fileRepository, IAssistantService assistantService) {
 		this.fileRepository = fileRepository;
+		this.assistantService = assistantService;
 	}
 
 	@Override
 	public FileDto createFile(String fileName, String fileType, String filePath, Integer assistantId, String createdBy)
 			throws DocumentLoaderException {
 		FileDto newIntent = null;
-		//TODO buscar asistente
+		AssistantDto assistant = this.assistantService.getAssistantById(assistantId);
 		try {
-			FileEntity fileEntity = FileMapper.mapToFile(fileName, fileType, filePath, createdBy, new Assistant());
+			FileEntity fileEntity = FileMapper.mapToFile(fileName, fileType, filePath, createdBy,AssistantMapper.mapToAssistant(assistant));
 			FileEntity savedIntent = this.fileRepository.save(fileEntity);
 			newIntent = FileMapper.mapToFileDto(savedIntent);
 		}catch(Exception e) {
