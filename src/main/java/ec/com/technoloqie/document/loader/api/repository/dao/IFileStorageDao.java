@@ -11,4 +11,6 @@ public interface IFileStorageDao {
 	String storeFile(MultipartFile file) throws DocumentLoaderException;
 	
 	String storeFile(InputStream fileStream, String fileName, String fileType, String filePath) throws DocumentLoaderException;
+	
+	String getEncodeFile(String path)throws DocumentLoaderException;
 }

@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
+import ec.com.technoloqie.document.loader.api.model.FileEntity;
 import ec.com.technoloqie.document.loader.api.service.IFileStorageService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -92,6 +93,20 @@ class TecDocumentLoaderWsApplicationTests {
 		}catch(Exception e) {
 			log.error("Error readFilesAndSaveMultipartTest. {}",e );
 			Assertions.assertTrue(Boolean.TRUE,"readFilesAndSaveMultipartTest.");
+		}
+	}
+	
+	@Test
+	void saveFilesFromDirectoryPathTest() {
+		try {
+			String path="/var/opt/apptmp";
+			Integer assistantId=4; 
+			String createdBy="test";
+			List<FileEntity> files = this.storageService.saveFilesFromDirectory(path, assistantId, createdBy);
+			Assertions.assertNotNull(files);
+		}catch(Exception e) {
+			log.error("Error saveFilesFromDirectoryPathTest. {}",e );
+			Assertions.assertTrue(Boolean.TRUE,"saveFilesFromDirectoryPathTest.");
 		}
 	}
 	

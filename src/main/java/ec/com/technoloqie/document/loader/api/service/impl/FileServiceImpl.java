@@ -51,4 +51,10 @@ public class FileServiceImpl implements IFileService{
 		return files.stream().map( FileMapper::mapToFileDto).toList();
 	}
 
+	@Override
+	public FileDto getFileById(Integer id) throws DocumentLoaderException {
+		FileEntity fileEntity = this.fileRepository.findById(id).orElseThrow(()-> new DocumentLoaderException("Error el archivo no existe"));
+		return FileMapper.mapToFileDto(fileEntity);
+	}
+
 }

@@ -26,4 +26,7 @@ public interface IFileStorageService {
 	//public Resource load(String filename);
 	//public void deleteAll();
 	//public Stream<Path> loadAll();
+	List<FileEntity> saveFilesFromDirectory(String path,Integer assistantId, String createdBy)throws DocumentLoaderException;
+
+	FileDto getDownloadFile(Integer fileId)throws DocumentLoaderException;
 }

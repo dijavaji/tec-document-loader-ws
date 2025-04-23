@@ -1,5 +1,8 @@
 package ec.com.technoloqie.document.loader.api;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -92,6 +95,13 @@ public class DocumentInjectionTest {
 			log.error("Error getDocsFromPdfWithCatalog. {}",e);
 			Assertions.assertTrue(Boolean.TRUE,"getDocsFromPdfWithCatalog.");
 		}
+    }
+	
+	@Test
+	void readFileTest() throws IOException {
+		String filePath="/var/opt/apptmp";
+		Path path = Path.of(filePath);
+        Files.readString(path);
     }
 
 }
