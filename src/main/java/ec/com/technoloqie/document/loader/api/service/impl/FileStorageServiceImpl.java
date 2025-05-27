@@ -79,7 +79,7 @@ public class FileStorageServiceImpl implements IFileStorageService{
 			while ((line = reader.readLine()) != null) {
 				String[] data = line.split(";");
 				if(data.length <=1 || data.length >3) {
-					log.error("Error al guardar archivo el formato no es valido");
+					log.error("Error al guardar archivo el formato no es valido-- {}",data[0]);
 					throw new DocumentLoaderException("Error al guardar archivo el formato no es valido");
 				}
 				
