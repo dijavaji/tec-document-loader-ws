@@ -115,6 +115,12 @@
     		<artifactId>langchain4j-core</artifactId>
     		<version>0.35.0</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>io.projectreactor</groupId>
+		    <artifactId>reactor-core</artifactId>
+		    <version>3.6.10</version>
+		</dependency>
 
 	</dependencies>
 	<dependencyManagement>
