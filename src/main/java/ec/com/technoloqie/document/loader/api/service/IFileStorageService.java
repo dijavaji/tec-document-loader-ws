@@ -14,7 +14,7 @@ public interface IFileStorageService {
 
 	//public void init();
 
-	void saveCsv(MultipartFile file)throws DocumentLoaderException;
+	void saveCsv(MultipartFile file, Integer assistantId, String createdBy)throws DocumentLoaderException;
 	
 	Collection<String> storeFiles(Collection<MultipartFile> files)throws DocumentLoaderException;
 	
