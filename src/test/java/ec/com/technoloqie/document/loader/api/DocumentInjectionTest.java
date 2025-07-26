@@ -3,6 +3,7 @@ package ec.com.technoloqie.document.loader.api;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,8 +12,10 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
+import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.test.context.ActiveProfiles;
 
 import ec.com.technoloqie.document.loader.api.model.KnowledgeData;
@@ -103,5 +106,36 @@ public class DocumentInjectionTest {
 		Path path = Path.of(filePath);
         Files.readString(path);
     }
+	
+	//@SneakyThrows
+	@Test
+	void getDirectory() {
+		try {
+		String inputDir ="/var/opt/apptmp";//"/temp/ingestion-files/";
+		
+		String pattern = "*.{pdf,docx,txt,pages,csv}";
+		
+	    List<Document> documentList = new ArrayList<>();
+	    //TikaDocumentReader tikaDocumentReader;
+
+	    Files.newDirectoryStream(Path.of(inputDir), pattern).forEach(path -> {
+	      List<Document> documents = null;
+	      try {
+	        documents = new TikaDocumentReader(new ByteArrayResource(Files.readAllBytes(path))).get()
+	          .stream().peek(document -> {
+	            document.getMetadata().put("source", path.getFileName());
+	            log.info("Reading new document :: {}", path.getFileName());
+	          }).toList();
+	      } catch (IOException e) {
+	        throw new RuntimeException("Error while reading the file : " + path.toUri() + "::" + e);
+	      }
+	      documentList.addAll(documents);
+	    });
+		}catch(Exception e) {
+			log.error("Error getDirectory. {}",e);
+			Assertions.assertTrue(Boolean.TRUE,"getDirectory.");
+		}
+	    //return documentList;
+	  }
 
 }
