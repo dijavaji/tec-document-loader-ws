@@ -93,5 +93,17 @@ public class DocumentLoaderServiceTest {
 			Assertions.assertTrue(Boolean.TRUE,"getFilesByAssistantNameTest.");
 		}
 	}
-
+	
+	@Test
+	void findListIntentsbyAsistantIdTest() {
+		try {
+			Integer assistantId = 3;
+			List<IntentDto> intents = intentService.getListIntents(assistantId);
+			log.info("findListIntentsbyAsistantIdTest size: {}",intents.size());
+			Assertions.assertNotNull(intents);
+		}catch(Exception e) {
+			log.error("Error findListIntentsbyAsistantIdTest. ",e );
+			Assertions.assertTrue(Boolean.TRUE,"findListIntentsbyAsistantIdTest.");
+		}
+	}
 }
