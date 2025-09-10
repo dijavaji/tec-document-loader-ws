@@ -189,9 +189,10 @@ public class IntentServiceImpl implements IIntentService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<IntentDto> getListIntents(Integer assistantId) throws DocumentLoaderException {
-		// TODO Auto-generated method stub
-		return null;
+		List <Intent> intents = this.intentRepository.findIntentByAssistantId(assistantId);
+		return intents.stream().map(IntentMapper::mapToIntentDto).toList();
 	}
 
 	@Override

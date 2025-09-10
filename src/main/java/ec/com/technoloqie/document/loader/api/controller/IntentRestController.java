@@ -148,5 +148,11 @@ public class IntentRestController {
 		}
 		
 	}
+	
+	@GetMapping("/assistant/{assistantId}")
+	public ResponseEntity<List<?>> getIntentsByAssistant(@PathVariable Integer assistantId) {
+		List<IntentDto> intents = this.intentService.getListIntents(assistantId);
+		return ResponseEntity.ok(intents); 
+	}
 
 }
