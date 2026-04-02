@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,17 +26,25 @@ import ec.com.technoloqie.document.loader.api.service.IIntentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = "${ec.com.technoloqie.chatbot.app.url}")
 @RestController
 @RequestMapping("${ec.com.technoloqie.document.loader.api.prefix}/intents")
 @Slf4j
 public class IntentRestController {
+	
+	@Value("${spring.application.name}")
+	private String appName;
 	
 	private IIntentService intentService;
 	
 	public IntentRestController(IIntentService intentService) {
 		this.intentService = intentService;
 	}
+	
+	@GetMapping
+    public String getMessage() {
+        return String.format("Now this finally works out. Welcome %s",appName);
+    }
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
